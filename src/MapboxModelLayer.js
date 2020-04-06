@@ -2,6 +2,10 @@ import React from 'react';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass.js';
 import mapboxgl from 'mapbox-gl';
 
 class MapboxModelLayer {
@@ -24,9 +28,10 @@ class MapboxModelLayer {
       rotateZ: this.rotations[2],     
       scale: 4 * this.mercCoord.meterInMercatorCoordinateUnits()
     };
-    this.camera = {};
-    this.scene = {};
-    this.renderer = {};
+    this.camera = null;
+    this.scene = null;
+    this.renderer = null;
+    this.compose = null;
   }
 
   onAdd = (map, gl) => {
@@ -48,15 +53,21 @@ class MapboxModelLayer {
       this.scene.add(gltf.scene);
       }
     );
-    
+    this.scene.background = null;
     // use the Mapbox GL JS map canvas for THREE.js
     this.renderer = new THREE.WebGLRenderer({
       canvas: map.getCanvas(),
       context: gl,
       antialias: true
     });
-    
+    //document.body.appendChild( this.renderer.domElement );
+
     this.renderer.autoClear = false;
+    this.composer = new EffectComposer( this.renderer );
+    //this.composer.renderToScreen = false;
+    this.composer.addPass(new RenderPass(this.scene, this.camera, null, new THREE.Color(1,0,0), 0.6));    
+    //this.composer.addPass(new UnrealBloomPass(new THREE.Vector2(1280, 720), 2, 0.5, 0.85));    
+    //this.composer.addPass(new AfterimagePass(0.9));
   }
 
   onRender = (gl, matrix) => {
@@ -82,7 +93,11 @@ class MapboxModelLayer {
     
     this.camera.projectionMatrix = m.multiply(l);
     this.renderer.state.reset();
-    this.renderer.render(this.scene, this.camera);
+    //this.renderer.setClearColor(new THREE.Color(0,1,0), 1);
+    //this.renderer.setClearAlpha(1);
+    //this.renderer.clear();
+    this.composer.render();
+    //this.renderer.render(this.scene, this.camera);
     this.map.triggerRepaint();
   }
 
