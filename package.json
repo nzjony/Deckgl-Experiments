@@ -7,10 +7,15 @@
     "build": "webpack -p"
   },
   "dependencies": {
+    "@here/harp-map-theme": "^0.14.0",
+    "@here/harp-mapview": "^0.14.0",
+    "@here/harp-omv-datasource": "^0.14.0",
+    "@here/harp-webpack-utils": "^0.14.0",
     "deck.gl": "^8.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-map-gl": "^5.2.3"
+    "react-map-gl": "^5.2.3",
+    "three": "^0.114.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

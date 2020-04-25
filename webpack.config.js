@@ -1,10 +1,14 @@
 const {resolve} = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { addHarpWebpackConfig } = require("@here/harp-webpack-utils/scripts/HarpWebpackConfig");
 
 module.exports = {
     mode: 'development',
     devtool: 'source-map',
-    entry: './src/app.js',
+    entry: {
+        main: './src/app.js',
+        'harpgl-decoder': './src/harp-decoder.js'
+    },
 
     devServer: {
         port: 3000,
@@ -21,7 +25,11 @@ module.exports = {
         },
     },
     
-
+    output: {        
+        filename: '[name].bundle.js',
+        globalObject: 'this'
+    },
+  
     module: {
         rules: [
           {
