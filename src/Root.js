@@ -149,6 +149,9 @@ class Root extends React.Component{
           onLoad={ this.onDeckGlLoad }
           //onWebGLInitialized = {this.onWebGLInit}
           gl={ this.webglContext }
+          parameters = {{
+            depthTest: true
+          }}
         >
         </DeckGL>
       </div>
