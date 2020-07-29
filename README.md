@@ -1,5 +1,5 @@
-# Deckgl-Base
-Base repo for DeckGl Experimentation
+# Harp+Deck
+Base repo for testing integration issues between Harpgl and DeckGl.
 
 # Installation
 
