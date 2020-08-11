@@ -55,6 +55,8 @@ class Root extends React.Component{
       minimum: 0.1,
       maximum: 100000,
     });
+    // Why is far plane always constant when zooming out?
+    console.log("Zoom:" + viewState.zoom + " far:" + far);
     this.setState( { viewState, near, far} );
   }
 
@@ -87,8 +89,8 @@ class Root extends React.Component{
       canvas: mapCanvas,
       //context: gl,
 
-      //Throws error if intially far value set to low values like 3. If set to high values 1000+ initially and changed to low values later through `updateCameras` error doesn't occur.
-      clipPlanesEvaluator: new FixedClipPlanesEvaluator(0.1, 3),
+     // Just make it a tilt evaluator for now so we can see the buildings.
+      clipPlanesEvaluator: new TiltViewClipPlanesEvaluator(),// FixedClipPlanesEvaluator(0.1, 3),
 
       //clipPlanesEvaluator: new InterpolatedClipPlanesEvaluator(0.1, 0.1, 35, 300),
       theme: 'https://assets.vector.hereapi.com/styles/berlin/base/harp.gl/tilezen?apikey=YZXUgJpknqSz7OH05fKRJBz6k9lKFRe4m5KYtNMjPxc',
